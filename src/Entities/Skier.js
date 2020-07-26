@@ -96,6 +96,7 @@ export class Skier extends Entity {
     this.setDirection(Constants.SKIER_DIRECTIONS.DOWN);
   }
 
+  //Function where the skier will jump when Space bar is pressed or skier hits a jump ramp.
   jump() {
     this.y += this.speed + 1;
     this.setDirection(this.jumpFlag);
@@ -103,6 +104,7 @@ export class Skier extends Entity {
 
   checkIfSkierHitObstacle(obstacleManager, assetManager) {
     const asset = assetManager.getAsset(this.assetName);
+    console.log(asset);
     const skierBounds = new Rect(
       this.x - asset.width / 2,
       this.y - asset.height / 2,
@@ -119,13 +121,17 @@ export class Skier extends Entity {
         obstaclePosition.x + obstacleAsset.width / 2,
         obstaclePosition.y
       );
+
+      //When a skier hits an obstacle of type rock and the skier status was juming over it , the skier will not crash.
       if (
         this.jumpFlag > 5 &&
         (obstacle.getAssetName() === "rock1" ||
           obstacle.getAssetName() === "rock2")
       ) {
         return false;
-      } else if (obstacle.getAssetName() === "jumpramp") {
+      }
+      //If the obstacle type is jumpramp the skier will jump instead of crashing
+      else if (obstacle.getAssetName() === "jumpramp") {
         if (intersectTwoRects(skierBounds, obstacleBounds)) {
           this.jumpFlag = 6;
           this.jump();
@@ -137,6 +143,9 @@ export class Skier extends Entity {
 
     if (collision) {
       this.setDirection(Constants.SKIER_DIRECTIONS.CRASH);
+      return true;
+    } else {
+      return false;
     }
   }
 }

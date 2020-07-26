@@ -2,6 +2,7 @@ import * as Constants from "../Constants";
 import { AssetManager } from "./AssetManager";
 import { Canvas } from "./Canvas";
 import { Skier } from "../Entities/Skier";
+import { Rhino } from "../Entities/Rhino";
 import { ObstacleManager } from "../Entities/Obstacles/ObstacleManager";
 import { Rect } from "./Utils";
 
@@ -11,7 +12,14 @@ export class Game {
   constructor() {
     this.assetManager = new AssetManager();
     this.canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-    this.skier = new Skier(0, 0);
+    //Changed the Y orientation of the skier to make some distance between the rhino and the skier
+    this.skier = new Skier(0, 650);
+    // Initilization of the Rhino object
+    this.rhino = new Rhino(0, 0);
+    // Flag should be used to detrmine that the game is ended and to show the score at the end TODO
+    this.endGame = false;
+    this.score = -650;
+
     this.obstacleManager = new ObstacleManager();
 
     document.addEventListener("keydown", this.handleKeyDown.bind(this));
@@ -27,37 +35,59 @@ export class Game {
 
   run() {
     this.canvas.clearCanvas();
-
     this.updateGameWindow();
     this.drawGameWindow();
-
     requestAnimationFrame(this.run.bind(this));
   }
 
   updateGameWindow() {
-    this.skier.move();
+    //Check if the game is ended so It will show the end game screen with the final score.
+    if (!this.endGame) {
+      this.skier.move();
+      this.rhino.move();
+      const previousGameWindow = this.gameWindow;
+      this.calculateGameWindow();
+      this.obstacleManager.placeNewObstacle(
+        this.gameWindow,
+        previousGameWindow
+      );
+      //Check if the jump process is ended to return the user direction to the normal behavior
+      if (this.skier.jumpFlag === 10) {
+        this.skier.turnDown();
+        this.skier.jumpFlag = 0;
+      }
+      // check if the skier is currently in jumping process
+      if (this.skier.jumpFlag > 5 && this.skier.jumpFlag < 10) {
+        this.skier.jumpFlag++;
+        this.skier.jump();
+      }
 
-    const previousGameWindow = this.gameWindow;
-    this.calculateGameWindow();
-    this.obstacleManager.placeNewObstacle(this.gameWindow, previousGameWindow);
+      if (
+        this.skier.checkIfSkierHitObstacle(
+          this.obstacleManager,
+          this.assetManager
+        )
+      ) {
+        //If the user hits an obstacle the rhino is aligned in the same x coordinate for correction
+        this.rhino.x = this.skier.x;
 
-    if (this.skier.jumpFlag === 10) {
-      this.skier.turnDown();
-      this.skier.jumpFlag = 0;
+        //Check if the rhino hits the skier
+        if (this.rhino.y > this.skier.y) {
+          this.rhino.setDirection(Constants.SKIER_DIRECTIONS.KILLED);
+          this.skier.setDirection(Constants.SKIER_DIRECTIONS.KILLED);
+          this.endGame = true;
+        }
+      }
+      // Calculate the new score where skier y-coordinate location is the actual score.
+      this.score += Math.ceil(this.skier.y);
     }
-
-    if (this.skier.jumpFlag > 5 && this.skier.jumpFlag < 10) {
-      this.skier.jumpFlag++;
-      this.skier.jump();
-    }
-
-    this.skier.checkIfSkierHitObstacle(this.obstacleManager, this.assetManager);
   }
 
   drawGameWindow() {
     this.canvas.setDrawOffset(this.gameWindow.left, this.gameWindow.top);
 
     this.skier.draw(this.canvas, this.assetManager);
+    this.rhino.draw(this.canvas, this.assetManager);
     this.obstacleManager.drawObstacles(this.canvas, this.assetManager);
   }
 
@@ -78,21 +108,25 @@ export class Game {
     switch (event.which) {
       case Constants.KEYS.LEFT:
         this.skier.turnLeft();
+        this.rhino.turnLeft();
         event.preventDefault();
         break;
       case Constants.KEYS.RIGHT:
         this.skier.turnRight();
+        this.rhino.turnRight();
         event.preventDefault();
         break;
       case Constants.KEYS.UP:
         this.skier.turnUp();
+        this.rhino.turnUp();
         event.preventDefault();
         break;
       case Constants.KEYS.DOWN:
         this.skier.turnDown();
+        this.rhino.turnDown();
         event.preventDefault();
         break;
-
+      //Check if the new feature where Skier should jump is triggered.
       case Constants.KEYS.JUMP:
         this.skier.jumpFlag = 6;
         this.skier.jump();

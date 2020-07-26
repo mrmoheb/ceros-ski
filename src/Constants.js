@@ -17,6 +17,10 @@ export const JUMP2 = "jump2";
 export const JUMP3 = "jump3";
 export const JUMP4 = "jump4";
 export const JUMP5 = "jump5";
+export const KILLED = "killed";
+export const RHINO = "rhino";
+export const RHINO_LEFT = "rhinoleft";
+export const RHINO_RIGHT = "rhinoright";
 
 export const SKIER_STARTING_SPEED = 10;
 export const SKIER_DIAGONAL_SPEED_REDUCER = 1.4142;
@@ -38,6 +42,10 @@ export const ASSETS = {
   [JUMP3]: "img/skier_jump_3.png",
   [JUMP4]: "img/skier_jump_4.png",
   [JUMP5]: "img/skier_jump_5.png",
+  [KILLED]: "img/rhino_lift_eat_1.png",
+  [RHINO]: "img/rhino_default.png",
+  [RHINO_RIGHT]: "img/rhino_run_left_2.png",
+  [RHINO_LEFT]: "img/rhino_run_left.png",
 };
 
 export const SKIER_DIRECTIONS = {
@@ -52,6 +60,7 @@ export const SKIER_DIRECTIONS = {
   JUMP2: 8,
   JUMP3: 9,
   JUMP4: 10,
+  KILLED: 11,
 };
 
 export const SKIER_DIRECTION_ASSET = {
@@ -66,6 +75,22 @@ export const SKIER_DIRECTION_ASSET = {
   [SKIER_DIRECTIONS.JUMP2]: JUMP3,
   [SKIER_DIRECTIONS.JUMP3]: JUMP4,
   [SKIER_DIRECTIONS.JUMP4]: JUMP5,
+  [SKIER_DIRECTIONS.KILLED]: KILLED,
+};
+
+export const RHINO_DIRECTION_ASSET = {
+  [SKIER_DIRECTIONS.CRASH]: KILLED,
+  [SKIER_DIRECTIONS.LEFT]: RHINO_LEFT,
+  [SKIER_DIRECTIONS.LEFT_DOWN]: RHINO_LEFT,
+  [SKIER_DIRECTIONS.DOWN]: RHINO,
+  [SKIER_DIRECTIONS.RIGHT_DOWN]: RHINO_RIGHT,
+  [SKIER_DIRECTIONS.RIGHT]: RHINO_RIGHT,
+  [SKIER_DIRECTIONS.JUMP]: RHINO,
+  [SKIER_DIRECTIONS.JUMP1]: RHINO,
+  [SKIER_DIRECTIONS.JUMP2]: RHINO,
+  [SKIER_DIRECTIONS.JUMP3]: RHINO,
+  [SKIER_DIRECTIONS.JUMP4]: RHINO,
+  [SKIER_DIRECTIONS.KILLED]: KILLED,
 };
 
 export const KEYS = {
