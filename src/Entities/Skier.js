@@ -66,6 +66,8 @@ export class Skier extends Entity {
     if (this.direction === Constants.SKIER_DIRECTIONS.LEFT) {
       this.moveSkierLeft();
     } else {
+      // Fix the turn left after crashing with obstacle issue.
+      // The below code check if the current direction is crash it will reset the value to left direction and move the skier up.
       if (this.direction) {
         this.setDirection(this.direction - 1);
       } else {
