@@ -17,7 +17,7 @@ export class Game {
     // Initilization of the Rhino object
     this.rhino = new Rhino(0, 0);
     // Flag should be used to detrmine that the game is ended and to show the score at the end TODO
-    this.endGame = false;
+
     this.score = -650;
 
     this.obstacleManager = new ObstacleManager();
@@ -42,7 +42,7 @@ export class Game {
 
   updateGameWindow() {
     //Check if the game is ended so It will show the end game screen with the final score.
-    if (!this.endGame) {
+    if (this.skier.direction !== 11) {
       this.skier.move();
       this.rhino.move();
       const previousGameWindow = this.gameWindow;
@@ -75,7 +75,6 @@ export class Game {
         if (this.rhino.y > this.skier.y) {
           this.rhino.setDirection(Constants.SKIER_DIRECTIONS.KILLED);
           this.skier.setDirection(Constants.SKIER_DIRECTIONS.KILLED);
-          this.endGame = true;
         }
       }
       // Calculate the new score where skier y-coordinate location is the actual score.

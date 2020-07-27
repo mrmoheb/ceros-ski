@@ -75,10 +75,12 @@ export class Rhino extends Entity {
   }
 
   turnRight() {
-    if (this.direction === Constants.SKIER_DIRECTIONS.RIGHT) {
-      this.moveSkierRight();
-    } else {
-      this.setDirection(this.direction + 1);
+    if (this.direction !== 11) {
+      if (this.direction === Constants.SKIER_DIRECTIONS.RIGHT) {
+        this.moveSkierRight();
+      } else {
+        this.setDirection(this.direction + 1);
+      }
     }
   }
 

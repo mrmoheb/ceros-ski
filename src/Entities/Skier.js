@@ -78,10 +78,12 @@ export class Skier extends Entity {
   }
 
   turnRight() {
-    if (this.direction === Constants.SKIER_DIRECTIONS.RIGHT) {
-      this.moveSkierRight();
-    } else {
-      this.setDirection(this.direction + 1);
+    if (this.direction !== 11) {
+      if (this.direction === Constants.SKIER_DIRECTIONS.RIGHT) {
+        this.moveSkierRight();
+      } else {
+        this.setDirection(this.direction + 1);
+      }
     }
   }
 
@@ -106,7 +108,6 @@ export class Skier extends Entity {
 
   checkIfSkierHitObstacle(obstacleManager, assetManager) {
     const asset = assetManager.getAsset(this.assetName);
-    console.log(asset);
     const skierBounds = new Rect(
       this.x - asset.width / 2,
       this.y - asset.height / 2,
