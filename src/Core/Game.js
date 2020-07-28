@@ -45,7 +45,6 @@ export class Game {
     ) {
       this.rhino.y = this.skier.y - Constants.DISTANCE_BETWEEN_RHINO_AND_SKIER;
       this.rhinoShouldAppearFlag = true;
-      console.log(this.skier.y);
     }
   }
 
