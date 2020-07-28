@@ -12,15 +12,15 @@ export const TREE_CLUSTER = "treeCluster";
 export const JUMP_RAMP = "jumpramp";
 export const ROCK1 = "rock1";
 export const ROCK2 = "rock2";
-export const JUMP1 = "jump1";
-export const JUMP2 = "jump2";
-export const JUMP3 = "jump3";
-export const JUMP4 = "jump4";
-export const JUMP5 = "jump5";
+export const JUMP = "jump";
+export const AFTER_JUMP = "afterjump";
 export const KILLED = "killed";
 export const RHINO = "rhino";
 export const RHINO_LEFT = "rhinoleft";
 export const RHINO_RIGHT = "rhinoright";
+export const INITIAL_Y_SKIER_START = 30000;
+export const DISTANCE_THE_RHINO_SHOULD_APPEAR = 60000;
+export const DISTANCE_BETWEEN_RHINO_AND_SKIER = 440;
 
 export const SKIER_STARTING_SPEED = 10;
 export const SKIER_DIAGONAL_SPEED_REDUCER = 1.4142;
@@ -37,11 +37,8 @@ export const ASSETS = {
   [ROCK1]: "img/rock_1.png",
   [ROCK2]: "img/rock_2.png",
   [JUMP_RAMP]: "img/jump_ramp.png",
-  [JUMP1]: "img/skier_jump_1.png",
-  [JUMP2]: "img/skier_jump_2.png",
-  [JUMP3]: "img/skier_jump_3.png",
-  [JUMP4]: "img/skier_jump_4.png",
-  [JUMP5]: "img/skier_jump_5.png",
+  [JUMP]: "img/skier_jump_1.png",
+  [AFTER_JUMP]: "img/skier_jump_2.png",
   [KILLED]: "img/rhino_lift_eat_1.png",
   [RHINO]: "img/rhino_default.png",
   [RHINO_RIGHT]: "img/rhino_run_left_2.png",
@@ -56,11 +53,8 @@ export const SKIER_DIRECTIONS = {
   RIGHT_DOWN: 4,
   RIGHT: 5,
   JUMP: 6,
-  JUMP1: 7,
-  JUMP2: 8,
-  JUMP3: 9,
-  JUMP4: 10,
-  KILLED: 11,
+  AFTER_JUMP: 7,
+  KILLED: 8,
 };
 
 export const SKIER_DIRECTION_ASSET = {
@@ -70,11 +64,8 @@ export const SKIER_DIRECTION_ASSET = {
   [SKIER_DIRECTIONS.DOWN]: SKIER_DOWN,
   [SKIER_DIRECTIONS.RIGHT_DOWN]: SKIER_RIGHTDOWN,
   [SKIER_DIRECTIONS.RIGHT]: SKIER_RIGHT,
-  [SKIER_DIRECTIONS.JUMP]: JUMP1,
-  [SKIER_DIRECTIONS.JUMP1]: JUMP2,
-  [SKIER_DIRECTIONS.JUMP2]: JUMP3,
-  [SKIER_DIRECTIONS.JUMP3]: JUMP4,
-  [SKIER_DIRECTIONS.JUMP4]: JUMP5,
+  [SKIER_DIRECTIONS.JUMP]: JUMP,
+  [SKIER_DIRECTIONS.AFTER_JUMP]: AFTER_JUMP,
   [SKIER_DIRECTIONS.KILLED]: KILLED,
 };
 
@@ -85,11 +76,8 @@ export const RHINO_DIRECTION_ASSET = {
   [SKIER_DIRECTIONS.DOWN]: RHINO,
   [SKIER_DIRECTIONS.RIGHT_DOWN]: RHINO_RIGHT,
   [SKIER_DIRECTIONS.RIGHT]: RHINO_RIGHT,
-  [SKIER_DIRECTIONS.JUMP]: RHINO,
-  [SKIER_DIRECTIONS.JUMP1]: RHINO,
-  [SKIER_DIRECTIONS.JUMP2]: RHINO,
-  [SKIER_DIRECTIONS.JUMP3]: RHINO,
-  [SKIER_DIRECTIONS.JUMP4]: RHINO,
+  [SKIER_DIRECTIONS.AFTER_JUMP]: RHINO,
+  [SKIER_DIRECTIONS.AFTER_JUMP]: RHINO,
   [SKIER_DIRECTIONS.KILLED]: KILLED,
 };
 
@@ -99,8 +87,4 @@ export const KEYS = {
   UP: 38,
   DOWN: 40,
   JUMP: 32,
-  JUMP1: 32,
-  JUMP2: 32,
-  JUMP3: 32,
-  JUMP4: 32,
 };

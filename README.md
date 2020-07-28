@@ -95,3 +95,42 @@ how creative candidates get with this.
 - Write more unit tests for your code
 
 We are looking forward to see what you come up with!
+
+# What I have did:
+
+- ## Bug fix:
+  - The Root Cause: When the skier hits an obstacle the skier direction changes to 0. And as the player press left key the function which changes the position of the skier decrements the direction by 1 thats to say in this case the current direction is going to be -1. As the assetManager tries to render the -1 direction; it doesn't find any element of the array with key -1 so it returns undefined value. So the game drawing function fails to render the asset and the game window so it crashes and returns an error when its trying to calculate the width & the length.
+  - The Fix: I have created a new function checkIfSkierCanTurnLeft() which check if the skier is already crashed or not.
+    If the skier is crashed it will reset the direction of the skier to be 1 instead of -1.
+  - I have created the unit test script for this feature in the Game.test.js.
+
+* ## Jumping Feature:
+
+  - I had to append the Constants.js file to include the jumping variables and to define the asset image of this feature.
+  - I have appended the current keyboard event handler in the Game.js file and added the new function that I have created which will handle the jumping feature from the skier.js file.
+  - I have created a function in game.js file checkIfSkierIsJumping() which check if the skier is still jumping and should the game make the next direction to be going down through the game.
+  - I have created a jump() function in skier.js file which increments the y-axis with (speed + 4) as normal behavior for jumping which is speeding up the skier speed. And sets the skier direction to be JUMP which will load the assets of the jumping feature.
+  - If the skier is jumping over rock I have made sure that the skier will not crash. But if jumping over tree the skier will crash and this is checked in function checkIfSkierHitObstacle() in skier.js file.
+  - If the Skier hits an obstacle of type jump ramp the skier will have the jump feature triggered and will not crash but will jump.
+  - I have included the jumping feature unit testing feature in the Game.test.js file.
+
+* ## Rhino following the skier
+
+  - I have created a new file under name of Rhino.js which include a class of Rhino.
+  - The new class includes the same features of the skier except the rhino doesn't hit the obstacles.
+  - I have appended the current Constants.js class to include the Rhino assets library and to include new Constant name "KILLED" which refers to when the rhino hits the skier.
+  - A new function is created in game.js checkIfRhinoReachedSkier() which check if the Rhino reached the skier and if its true then the Skier directions is set to Killed and the game stops taking any other actions.
+  - In keyboard event handler function I have appended the current function to include all the rhino directions so the rhino will clone all the directions from the skier to make sure that the rhino is following the skier.
+  - The rhino starts to appear after 30000 units in y-axis which is equivalent to 50 seconds after the skier starts surfing.
+
+* ## Score Calculation (Bonus)
+
+  - The score calculation increments when the skier go further in the y-axis as there is a variable "score" in Game.js class file is incremented everytime.
+
+  - The function calculateScore() increments the score each time the skier go down further. Also it subtracts the actual starting point of the skier from the current distance to give the actual distance that the skier travelled.
+
+* ## Deploying the Game on Google Firebase cloud Hosting (Bonus)
+
+- I have used the Google Firebase services to deploy the game after creating a build.
+- You can find the game up and running from the below url
+- ### https://ceros-ski-2020.web.app/

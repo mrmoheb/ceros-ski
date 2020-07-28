@@ -7,7 +7,6 @@ export class Skier extends Entity {
 
   direction = Constants.SKIER_DIRECTIONS.DOWN;
   speed = Constants.SKIER_STARTING_SPEED;
-  jumpFlag = 0;
 
   constructor(x, y) {
     super(x, y);
@@ -62,18 +61,20 @@ export class Skier extends Entity {
     this.y -= Constants.SKIER_STARTING_SPEED;
   }
 
+  checkIfSkierCanTurnLeft() {
+    if (this.direction) {
+      this.setDirection(this.direction - 1);
+    } else {
+      this.setDirection(1);
+      this.moveSkierUp();
+    }
+  }
+
   turnLeft() {
     if (this.direction === Constants.SKIER_DIRECTIONS.LEFT) {
       this.moveSkierLeft();
     } else {
-      // Fix the turn left after crashing with obstacle issue.
-      // The below code check if the current direction is crash it will reset the value to left direction and move the skier up.
-      if (this.direction) {
-        this.setDirection(this.direction - 1);
-      } else {
-        this.setDirection(1);
-        this.moveSkierUp();
-      }
+      this.checkIfSkierCanTurnLeft();
     }
   }
 
@@ -99,11 +100,9 @@ export class Skier extends Entity {
   turnDown() {
     this.setDirection(Constants.SKIER_DIRECTIONS.DOWN);
   }
-
-  //Function where the skier will jump when Space bar is pressed or skier hits a jump ramp.
   jump() {
-    this.y += this.speed + 1;
-    this.setDirection(this.jumpFlag);
+    this.y += this.speed + 4;
+    this.setDirection(Constants.SKIER_DIRECTIONS.JUMP);
   }
 
   checkIfSkierHitObstacle(obstacleManager, assetManager) {
@@ -124,19 +123,15 @@ export class Skier extends Entity {
         obstaclePosition.x + obstacleAsset.width / 2,
         obstaclePosition.y
       );
-
-      //When a skier hits an obstacle of type rock and the skier status was juming over it , the skier will not crash.
       if (
-        this.jumpFlag > 5 &&
-        (obstacle.getAssetName() === "rock1" ||
-          obstacle.getAssetName() === "rock2")
+        (this.direction === Constants.SKIER_DIRECTIONS.JUMP ||
+          this.direction === Constants.SKIER_DIRECTIONS.AFTER_JUMP) &&
+        (obstacle.getAssetName() === Constants.ROCK1 ||
+          obstacle.getAssetName() === Constants.ROCK2)
       ) {
         return false;
-      }
-      //If the obstacle type is jumpramp the skier will jump instead of crashing
-      else if (obstacle.getAssetName() === "jumpramp") {
+      } else if (obstacle.getAssetName() === Constants.JUMP_RAMP) {
         if (intersectTwoRects(skierBounds, obstacleBounds)) {
-          this.jumpFlag = 6;
           this.jump();
           return false;
         }

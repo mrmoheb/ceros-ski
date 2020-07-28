@@ -12,13 +12,11 @@ export class Game {
   constructor() {
     this.assetManager = new AssetManager();
     this.canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-    //Changed the Y orientation of the skier to make some distance between the rhino and the skier
-    this.skier = new Skier(0, 650);
-    // Initilization of the Rhino object
+    this.skier = new Skier(0, Constants.INITIAL_Y_SKIER_START);
     this.rhino = new Rhino(0, 0);
-    // Flag should be used to detrmine that the game is ended and to show the score at the end TODO
+    this.rhinoShouldAppearFlag = false;
 
-    this.score = -650;
+    this.score = 0;
 
     this.obstacleManager = new ObstacleManager();
 
@@ -40,9 +38,37 @@ export class Game {
     requestAnimationFrame(this.run.bind(this));
   }
 
+  shouldTheRhinoAppearNow() {
+    if (
+      this.skier.y > Constants.DISTANCE_THE_RHINO_SHOULD_APPEAR &&
+      !this.rhinoShouldAppearFlag
+    ) {
+      this.rhino.y = this.skier.y - Constants.DISTANCE_BETWEEN_RHINO_AND_SKIER;
+      this.rhinoShouldAppearFlag = true;
+      console.log(this.skier.y);
+    }
+  }
+
+  checkIfSkierIsJumping() {
+    if (this.skier.direction === Constants.SKIER_DIRECTIONS.JUMP) {
+      this.skier.setDirection(Constants.SKIER_DIRECTIONS.AFTER_JUMP);
+      this.skier.y += this.skier.speed + 4;
+    } else if (this.skier.direction === Constants.SKIER_DIRECTIONS.AFTER_JUMP) {
+      this.skier.setDirection(Constants.SKIER_DIRECTIONS.DOWN);
+    }
+  }
+  checkIfRhinoReachedSkier() {
+    if (this.rhino.y > this.skier.y) {
+      this.rhino.setDirection(Constants.SKIER_DIRECTIONS.KILLED);
+      this.skier.setDirection(Constants.SKIER_DIRECTIONS.KILLED);
+    }
+  }
+  calculateScore() {
+    this.score += Math.ceil(this.skier.y) - Constants.INITIAL_Y_SKIER_START;
+  }
+
   updateGameWindow() {
-    //Check if the game is ended so It will show the end game screen with the final score.
-    if (this.skier.direction !== 11) {
+    if (this.skier.direction !== Constants.SKIER_DIRECTIONS.KILLED) {
       this.skier.move();
       this.rhino.move();
       const previousGameWindow = this.gameWindow;
@@ -51,34 +77,18 @@ export class Game {
         this.gameWindow,
         previousGameWindow
       );
-      //Check if the jump process is ended to return the user direction to the normal behavior
-      if (this.skier.jumpFlag === 10) {
-        this.skier.turnDown();
-        this.skier.jumpFlag = 0;
-      }
-      // check if the skier is currently in jumping process
-      if (this.skier.jumpFlag > 5 && this.skier.jumpFlag < 10) {
-        this.skier.jumpFlag++;
-        this.skier.jump();
-      }
-
+      this.shouldTheRhinoAppearNow();
+      this.checkIfSkierIsJumping();
       if (
         this.skier.checkIfSkierHitObstacle(
           this.obstacleManager,
           this.assetManager
         )
       ) {
-        //If the user hits an obstacle the rhino is aligned in the same x coordinate for correction
         this.rhino.x = this.skier.x;
-
-        //Check if the rhino hits the skier
-        if (this.rhino.y > this.skier.y) {
-          this.rhino.setDirection(Constants.SKIER_DIRECTIONS.KILLED);
-          this.skier.setDirection(Constants.SKIER_DIRECTIONS.KILLED);
-        }
+        this.checkIfRhinoReachedSkier();
       }
-      // Calculate the new score where skier y-coordinate location is the actual score.
-      this.score += Math.ceil(this.skier.y);
+      this.calculateScore();
     }
   }
 
@@ -104,6 +114,10 @@ export class Game {
   }
 
   handleKeyDown(event) {
+    if (this.skier.direction === Constants.SKIER_DIRECTIONS.KILLED) {
+      event.preventDefault();
+      return false;
+    }
     switch (event.which) {
       case Constants.KEYS.LEFT:
         this.skier.turnLeft();
@@ -125,9 +139,7 @@ export class Game {
         this.rhino.turnDown();
         event.preventDefault();
         break;
-      //Check if the new feature where Skier should jump is triggered.
       case Constants.KEYS.JUMP:
-        this.skier.jumpFlag = 6;
         this.skier.jump();
         event.preventDefault();
         break;

@@ -6,7 +6,6 @@ export class Rhino extends Entity {
 
   direction = Constants.SKIER_DIRECTIONS.DOWN;
   speed = Constants.SKIER_STARTING_SPEED;
-  jumpFlag = 0;
 
   constructor(x, y) {
     super(x, y);
@@ -98,7 +97,7 @@ export class Rhino extends Entity {
   }
 
   jump() {
-    this.y += this.speed + 1;
-    this.setDirection(this.jumpFlag);
+    this.y += this.speed + 10;
+    this.setDirection(Constants.SKIER_DIRECTIONS.JUMP);
   }
 }
