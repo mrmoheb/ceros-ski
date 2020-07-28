@@ -12,7 +12,7 @@ export class Canvas {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-
+    this.createScoreBoard();
     this.createCanvas();
   }
 
@@ -26,6 +26,23 @@ export class Canvas {
     this.ctx = canvas.getContext("2d");
     this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     document.body.appendChild(canvas);
+  }
+
+  createScoreBoard() {
+    const scoreBoard = document.createElement("div");
+    scoreBoard.id = "scoreBoard";
+    scoreBoard.style.float = "right";
+    scoreBoard.style.color = "red";
+    scoreBoard.style.fontSize = "2em";
+    scoreBoard.style.paddingRight = "1em";
+    const scoreLabel = document.createElement("span");
+    scoreLabel.innerHTML = "You score is: ";
+    const score = document.createElement("span");
+    score.id = "score";
+    score.innerHTML = "0";
+    scoreBoard.appendChild(scoreLabel);
+    scoreBoard.appendChild(score);
+    document.body.appendChild(scoreBoard);
   }
 
   clearCanvas() {

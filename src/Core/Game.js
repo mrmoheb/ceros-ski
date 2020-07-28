@@ -63,7 +63,8 @@ export class Game {
     }
   }
   calculateScore() {
-    this.score += Math.ceil(this.skier.y) - Constants.INITIAL_Y_SKIER_START;
+    this.score = Math.ceil(this.skier.y) - Constants.INITIAL_Y_SKIER_START;
+    document.getElementById("score").innerHTML = this.score;
   }
 
   updateGameWindow() {

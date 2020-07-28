@@ -131,6 +131,6 @@ We are looking forward to see what you come up with!
 
 * ## Deploying the Game on Google Firebase cloud Hosting (Bonus)
 
-- I have used the Google Firebase services to deploy the game after creating a build.
-- You can find the game up and running from the below url
-- ### https://ceros-ski-2020.web.app/
+  - I have used the Google Firebase services to deploy the game after creating a build.
+  - You can find the game up and running from the below url
+  - ### https://ceros-ski-2020.web.app/
